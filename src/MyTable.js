@@ -1,13 +1,13 @@
 import React, {useState, useEffect} from "react";
 import {Table} from "react-bootstrap";
-import schoolApi from "./schoolApi";
+import axios from "axios";
 
 export default function MyTable (){
 
 const [personsData, setPersonsData] = useState([]);
 
     useEffect(()=> {
-        schoolApi.get('/students')
+        axios.get('/students')
             .then(res => setPersonsData(res.data))
             .catch(console.error);
     }, [])
@@ -29,17 +29,16 @@ const [personsData, setPersonsData] = useState([]);
             {
                 personsData.map( personData => (
                     <tr key={personData.id}>
-                        <td>{personData.first_name}</td>
-                        <td>{personData.last_name}</td>
-                        <td>{personData.personal_no}</td>
+                        <td>{personData.id}</td>
+                        <td>{personData.firstName}</td>
+                        <td>{personData.lastName}</td>
+                        <td>{personData.personalNumber}</td>
                         <td>{personData.email}</td>
-                        <td>{personData.birth_date}</td>
+                        <td>{personData.birthDate}</td>
                     </tr>
                 ))
             }
 
-
-            }
 
 
             {/*<tr>*/}
