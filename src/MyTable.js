@@ -1,14 +1,18 @@
 import React, {useState, useEffect} from "react";
-import {Table} from "react-bootstrap";
+import {Table, Button} from "react-bootstrap";
+import {XSquareFill, PencilSquare} from 'react-bootstrap-icons'
 import axios from "axios";
+import EditStudentModal from "./EditStudentModal";
 
 export default function MyTable (){
 
-const [personsData, setPersonsData] = useState([]);
+const [peoplesData, setpeoplesData] = useState([]);
+const [personDataForModal, setPersonDataForModal] = useState({});
+const [modalShow, setModalShow] = useState(false);
 
     useEffect(()=> {
         axios.get('/students')
-            .then(res => setPersonsData(res.data))
+            .then(res => setpeoplesData(res.data))
             .catch(console.error);
     }, [])
 
@@ -23,11 +27,13 @@ const [personsData, setPersonsData] = useState([]);
                 <th>Personal No</th>
                 <th>email</th>
                 <th>Birth Date</th>
+                <th></th>
+                <th></th>
             </tr>
             </thead>
             <tbody>
             {
-                personsData.map( personData => (
+                peoplesData.map( personData => (
                     <tr key={personData.id}>
                         <td>{personData.id}</td>
                         <td>{personData.firstName}</td>
@@ -35,22 +41,36 @@ const [personsData, setPersonsData] = useState([]);
                         <td>{personData.personalNumber}</td>
                         <td>{personData.email}</td>
                         <td>{personData.birthDate}</td>
+                        <td>
+                            <Button
+                                size="sm"
+                                variant="danger"
+                                onClick={() =>{
+                                    const Id = personData.id;
+                                    axios.post(`students/delete-student/${Id}`).then(() => window.location.reload())}}>
+                                <XSquareFill/> Delete
+                            </Button>
+                        </td>
+                        <td>
+                            <Button size="sm"
+                                    variant="secondary"
+                                    onClick={()=>{
+                                        setPersonDataForModal(personData);
+                                        setModalShow(true);
+                                    }}>
+                                <PencilSquare/> Edit
+                            </Button>
+                        </td>
                     </tr>
                 ))
             }
-
-
-
-            {/*<tr>*/}
-            {/*    <td>1</td>*/}
-            {/*    <td>Mark</td>*/}
-            {/*    <td>Otto</td>*/}
-            {/*    <td>234</td>*/}
-            {/*    <th>mail@example.com</th>*/}
-            {/*    <th>12/12/2012</th>*/}
-            {/*</tr>*/}
             </tbody>
         </Table>
+            <EditStudentModal
+                show={modalShow}
+                person={personDataForModal}
+                onHide={()=>setModalShow(false)}
+            />
         </>
     )
 }
