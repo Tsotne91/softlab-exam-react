@@ -1,16 +1,20 @@
 import Toggle from "./Toggle";
-import MyTable from "./MyTable";
 import AddStudentModal from "./AddStudentModal";
-import {useState} from "react";
+import React, {useState} from "react";
 import {Button} from "react-bootstrap";
+import SearchStudent from "./SearchStudent";
 
 export default function App(){
     const [studentModalShow, setStudentModalShow] = useState(false);
 
+
+
+
     return (
     <>
         <Toggle/>
-        <MyTable/>
+        <SearchStudent/>
+
         <AddStudentModal
         show={studentModalShow}
         onHide={() => setStudentModalShow(false)}/>

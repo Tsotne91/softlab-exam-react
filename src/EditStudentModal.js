@@ -1,18 +1,28 @@
 import {Button, Form, Modal} from "react-bootstrap";
-import {useState} from "react";
+import {useEffect, useState} from "react";
 import axios from "axios";
 
 export default function EditStudentModal(props){
+    let initialValues = {
+        firstName: null,
+        lastName: null,
+        personalNumber: null,
+        email: null,
+        birthDate: null
+    }
 
-    const [formValues, setFormValues] = useState(props.person);
+    const [formValues, setFormValues] = useState(initialValues);
+
+    useEffect(()=> {
+        setFormValues(props.person)
+    }, [props.person])
 
     const submitForm = async (e) =>{
         e.preventDefault();
-        await axios.post(`edit-student/${props.person.id}`, formValues);
+        await axios.put(`edit-student/${props.person.id}`, formValues);
         props.onHide();
         window.parent.location.reload();
     }
-
 
     const changeHandler = (field) => {
         return (e) => {

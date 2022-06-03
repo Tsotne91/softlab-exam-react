@@ -3,18 +3,21 @@ import {Table, Button} from "react-bootstrap";
 import {XSquareFill, PencilSquare} from 'react-bootstrap-icons'
 import axios from "axios";
 import EditStudentModal from "./EditStudentModal";
+//import SearchStudent from "./SearchStudent";
 
-export default function MyTable (){
+export default function MyTable (props){
 
-const [peoplesData, setpeoplesData] = useState([]);
+const [peoplesData, setPeoplesData] = useState([]);
 const [personDataForModal, setPersonDataForModal] = useState({});
 const [modalShow, setModalShow] = useState(false);
 
+
     useEffect(()=> {
         axios.get('/students')
-            .then(res => setpeoplesData(res.data))
-            .catch(console.error);
-    }, [])
+                .then(res => setPeoplesData(res.data))
+                .catch(console.error);
+    }, [props.peoplesdata])
+
 
     return (
         <>

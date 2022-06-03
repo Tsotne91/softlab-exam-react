@@ -1,7 +1,7 @@
 import {Container, Nav, Navbar} from "react-bootstrap";
 
-
 export default function Toggle (){
+
     return (
         <Navbar bg="primary" variant="dark">
             <Container>
