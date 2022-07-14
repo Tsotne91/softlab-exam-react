@@ -1,32 +1,33 @@
 import Form from 'react-bootstrap/Form'
 import {Button, FloatingLabel} from "react-bootstrap";
 import React, {useState} from "react";
-import MyTable from "./MyTable";
-import axios from "axios";
 
-export default function SearchStudent(){
+export default function SearchStudent({onSubmit}){
 
     const initialValues = {
         firstName: "",
-        lastName: ""
+        lastName: "",
     }
 
-    const [personSearchData, setPersonSearchData] = useState({initialValues});
+    const [values, setValues] = useState(initialValues);
 
     const changeHandler = (field) => {
         return (e) => {
-            setPersonSearchData({...personSearchData, [field]: e.target.value});
+            setValues({...values, [field]: e.target.value});
         }
     }
 
-
-   const submitSearch = async (personSearchData) => {
-        if (!personSearchData) return null;
-        else if (!personSearchData.firstName) await axios.get(`/students/?lastName=${personSearchData.lastName}`)
-        else if (!personSearchData.lastName) await axios.get(`/students/?firstName=${personSearchData.firstName}`)
-        else await axios.get(`/students/?firstName=${personSearchData.firstName}&lasName=${personSearchData.lastName}`)
+   const submitSearch = (e) => {
+        e.preventDefault();
+        if (!values) return null;
+        onSubmit(values);
    }
 
+   // const displayAll = (e) => {
+   //      e.preventDefault();
+   //      setValues(initialValues);
+   //      window.location.reload();
+   // }
 
     return (
         <>
@@ -38,7 +39,7 @@ export default function SearchStudent(){
             >
                 <Form.Control
                     type="text"
-                    value={personSearchData.firstName}
+                    value={values.firstName}
                     onChange={changeHandler("firstName")}/>
                 </FloatingLabel>
                 <FloatingLabel
@@ -48,7 +49,7 @@ export default function SearchStudent(){
                 >
                     <Form.Control
                         type="text"
-                        value={personSearchData.lastName}
+                        value={values.lastName}
                         onChange={changeHandler("lastName")}
                     />
                 </FloatingLabel>
@@ -58,7 +59,11 @@ export default function SearchStudent(){
                 className="col d-inline-block m-2"
                 onClick={submitSearch}
             >search</Button>
-            <MyTable peoplesdata={personSearchData}/>
+            {/*<Button*/}
+            {/*    className="col d-inline-block m-2"*/}
+            {/*    variant="secondary"*/}
+            {/*    onClick={displayAll}*/}
+            {/*>display all</Button>*/}
         </>
     )
 }

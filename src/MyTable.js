@@ -1,23 +1,14 @@
-import React, {useState, useEffect} from "react";
+import React, {useState} from "react";
 import {Table, Button} from "react-bootstrap";
 import {XSquareFill, PencilSquare} from 'react-bootstrap-icons'
 import axios from "axios";
 import EditStudentModal from "./EditStudentModal";
-//import SearchStudent from "./SearchStudent";
 
-export default function MyTable (props){
+export default function MyTable ({data}){
 
-const [peoplesData, setPeoplesData] = useState([]);
+
 const [personDataForModal, setPersonDataForModal] = useState({});
 const [modalShow, setModalShow] = useState(false);
-
-
-    useEffect(()=> {
-        axios.get('/students')
-                .then(res => setPeoplesData(res.data))
-                .catch(console.error);
-    }, [props.peoplesdata])
-
 
     return (
         <>
@@ -36,7 +27,7 @@ const [modalShow, setModalShow] = useState(false);
             </thead>
             <tbody>
             {
-                peoplesData.map( personData => (
+                data.map( personData => (
                     <tr key={personData.id}>
                         <td>{personData.id}</td>
                         <td>{personData.firstName}</td>
